@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>LookMa AI</Text>
+      <Text style={styles.textStyle}>LookMa AI</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +13,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#121212',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  textStyle: {
+    color: '#757575',
   },
 });
