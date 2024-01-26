@@ -5,6 +5,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import ConvoSelectScreen from './src/screens/ConvoSelectScreen';
 import ConvoScreen from './src/screens/ConvoScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import AddServerScreen from './src/screens/AddServerScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name="ConvoSelectScreen" component={ConvoSelectScreen} />
         <Stack.Screen name="ConvoScreen" component={ConvoScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="AddServerScreen" component={AddServerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
