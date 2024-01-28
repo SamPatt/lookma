@@ -16,15 +16,24 @@ export default function AddServerScreen({ navigation }) {
 
   const saveServerSettings = async () => {
     try {
-      const settings = { serverName, serverType, serverAddress, port };
-      await AsyncStorage.setItem('@server_settings', JSON.stringify(settings));
-      // Navigate back after saving
+      const newSetting = { serverName, serverType, serverAddress, port };
+      const existingSettingsJson = await AsyncStorage.getItem('@server_settings');
+      let existingSettings = existingSettingsJson ? JSON.parse(existingSettingsJson) : [];
+  
+      // Ensure existingSettings is an array
+      if (!Array.isArray(existingSettings)) {
+        existingSettings = [];
+      }
+  
+      existingSettings.push(newSetting);
+      await AsyncStorage.setItem('@server_settings', JSON.stringify(existingSettings));
       navigation.goBack();
     } catch (e) {
-      // saving error
       console.error('Error saving server settings:', e);
     }
   };
+  
+  
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
