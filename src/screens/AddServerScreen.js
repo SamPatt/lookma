@@ -11,7 +11,7 @@ export default function AddServerScreen({ navigation }) {
 
   const handleServerTypeChange = (newType) => {
     setServerType(newType);
-    setPort(newType === 'Ollama' ? '11434' : newType === 'LMStudio' ? '1234' : '');
+    setPort(newType === 'Ollama' ? '11434' : newType === 'LMStudio' ? '1234' : newType === 'Jan' ? '1337' : '');
   };
 
   const saveServerSettings = async () => {
@@ -31,7 +31,7 @@ export default function AddServerScreen({ navigation }) {
       <Text>Server Type</Text>
       {/* Implement a dropdown here. For simplicity, using buttons */}
       <View>
-        {['Ollama', 'LMStudio', 'Other'].map((type) => (
+        {['Ollama', 'LMStudio', 'Jan', 'Other'].map((type) => (
           <Button key={type} title={type} onPress={() => handleServerTypeChange(type)} />
         ))}
       </View>
