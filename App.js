@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/HomeScreen';
@@ -6,13 +6,18 @@ import ConvoSelectScreen from './src/screens/ConvoSelectScreen';
 import ConvoScreen from './src/screens/ConvoScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import AddServerScreen from './src/screens/AddServerScreen';
+import LoadingScreen from './src/screens/LoadingScreen';
 import { database } from './src/utils/database';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
   React.useEffect(() => {
     database.init();
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 4000);
 
     // // Insert a test server
     // database.insertServer("Test Server", "127.0.0.1", 1234, "Model X", serverResult => {
@@ -40,6 +45,9 @@ export default function App() {
     //   });
     // });
   }, []);
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
