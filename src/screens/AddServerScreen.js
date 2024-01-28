@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AddServerScreen({ navigation }) {
+  const [serverName, setServerName] = useState('');
   const [serverType, setServerType] = useState('Ollama');
   const [serverAddress, setServerAddress] = useState('');
   const [port, setPort] = useState(serverType === 'Ollama' ? '11434' : serverType === 'LMStudio' ? '1234' : '');
@@ -10,6 +12,18 @@ export default function AddServerScreen({ navigation }) {
   const handleServerTypeChange = (newType) => {
     setServerType(newType);
     setPort(newType === 'Ollama' ? '11434' : newType === 'LMStudio' ? '1234' : '');
+  };
+
+  const saveServerSettings = async () => {
+    try {
+      const settings = { serverName, serverType, serverAddress, port };
+      await AsyncStorage.setItem('@server_settings', JSON.stringify(settings));
+      // Navigate back after saving
+      navigation.goBack();
+    } catch (e) {
+      // saving error
+      console.error('Error saving server settings:', e);
+    }
   };
 
   return (
@@ -21,6 +35,15 @@ export default function AddServerScreen({ navigation }) {
           <Button key={type} title={type} onPress={() => handleServerTypeChange(type)} />
         ))}
       </View>
+
+
+      <Text>Server Name</Text>
+
+      <TextInput
+        placeholder="Server Name"
+        value={serverName}
+        onChangeText={setServerName}
+      />
 
       <TextInput
         placeholder="Local Server Address"
@@ -57,10 +80,8 @@ export default function AddServerScreen({ navigation }) {
         </View>
       </Modal>
 
-      {/* Removed CheckBox and related text */}
-
       <Button title="Test Connection" onPress={() => { /* Test Connection Logic */ }} />
-      <Button title="Add Server" onPress={() => { /* Add Server Logic */ navigation.goBack(); }} />
+      <Button title="Add Server" onPress={saveServerSettings} />
     </View>
   );
 }
