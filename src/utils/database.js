@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabase('new_app.db');
+const db = SQLite.openDatabase('new_app4.db');
 
 const init = () => {
     db.transaction(tx => {
@@ -11,6 +11,7 @@ const init = () => {
         'name TEXT NOT NULL, ' +
         'address TEXT NOT NULL, ' +
         'port INTEGER NOT NULL, ' +
+        'type TEXT NOT NULL,' +
         'model TEXT NOT NULL);'
       );
   
@@ -37,16 +38,17 @@ const init = () => {
     }, (error) => { console.log('Transaction error:', error); }, () => { console.log('Database initialization successful'); });
   };
 
-const insertServer = (name, address, port, model, callback) => {
+  const insertServer = (name, address, port, type, model, callback) => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO servers (name, address, port, model) VALUES (?, ?, ?, ?);',
-        [name, address, port, model],
+        'INSERT INTO servers (name, address, port, type, model) VALUES (?, ?, ?, ?, ?);', // Five placeholders for five values
+        [name, address, port, type, model],
         (_, result) => callback && callback(result),
         (_, error) => console.error('Error inserting server:', error)
       );
     });
   };
+  
   
   const insertConversation = (serverId, title, callback) => {
     db.transaction(tx => {

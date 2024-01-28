@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import { database } from '../utils/database';
 
 export default function AddServerScreen({ navigation }) {
   const [serverName, setServerName] = useState('');
   const [serverType, setServerType] = useState('Ollama');
   const [serverAddress, setServerAddress] = useState('');
-  const [port, setPort] = useState(serverType === 'Ollama' ? '11434' : serverType === 'LMStudio' ? '1234' : '');
+  const [serverModel, setServerModel] = useState('');
+  const [port, setPort] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
 
   const handleServerTypeChange = (newType) => {
@@ -15,46 +16,47 @@ export default function AddServerScreen({ navigation }) {
   };
 
   const saveServerSettings = () => {
-    database.insertServer(serverName, serverAddress, parseInt(port, 10), serverType, (result) => {
+    database.insertServer(serverName, serverAddress, parseInt(port, 10), serverType, serverModel, (result) => {
       console.log('Server saved with ID:', result.insertId);
-      navigation.goBack();
+      navigation.navigate('ConvoSelectScreen', { serverId: result.insertId });
     });
-  };  
+  };
+    
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Server Type</Text>
-      {/* Implement a dropdown here. For simplicity, using buttons */}
-      <View>
-        {['Ollama', 'LMStudio', 'Jan', 'Other'].map((type) => (
-          <Button key={type} title={type} onPress={() => handleServerTypeChange(type)} />
-        ))}
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.headerText}>Add Server</Text>
 
-
-      <Text>Server Name</Text>
+      {['Ollama', 'LMStudio', 'Jan', 'Other'].map((type) => (
+        <Button key={type} title={type} onPress={() => handleServerTypeChange(type)} />
+      ))}
 
       <TextInput
+        style={styles.input}
         placeholder="Server Name"
+        placeholderTextColor="#aaa"
         value={serverName}
         onChangeText={setServerName}
       />
 
       <TextInput
+        style={styles.input}
+        placeholder="Model"
+        placeholderTextColor="#aaa"
+        value={serverModel}
+        onChangeText={setServerModel}
+      />
+
+      <TextInput
+        style={styles.input}
         placeholder="Local Server Address"
+        placeholderTextColor="#aaa"
         value={serverAddress}
         onChangeText={setServerAddress}
       />
 
-      <TextInput
-        placeholder="Port"
-        value={port}
-        onChangeText={setPort}
-        keyboardType="numeric"
-      />
-
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <Text>How can I find this?</Text>
+      <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
+        <Text style={styles.buttonText}>How can I find my local server address?</Text>
       </TouchableOpacity>
 
       <Modal
@@ -74,9 +76,58 @@ export default function AddServerScreen({ navigation }) {
           <Button title="Close" onPress={() => setModalVisible(!isModalVisible)} />
         </View>
       </Modal>
+      <TextInput
+        style={styles.input}
+        placeholder="Port"
+        placeholderTextColor="#aaa"
+        value={port}
+        onChangeText={setPort}
+        keyboardType="numeric"
+      />
+
 
       <Button title="Test Connection" onPress={() => { /* Test Connection Logic */ }} />
-      <Button title="Add Server" onPress={saveServerSettings} />
+      <TouchableOpacity style={styles.button} onPress={saveServerSettings}>
+        <Text style={styles.buttonText}>Add Server</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    backgroundColor: '#121212',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 20,
+  },
+  headerText: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    height: 40,
+    width: '100%',
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    padding: 10,
+    color: 'white',
+  },
+  button: {
+    backgroundColor: '#1e1e1e',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    width: '100%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+});

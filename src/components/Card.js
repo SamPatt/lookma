@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const Card = ({ title, subtitle, onPress }) => {
+const Card = ({ title, subtitle, info, onPress }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <Text style={styles.cardTitle}>{title}</Text>
       {subtitle && <Text style={styles.cardSubtitle}>{subtitle}</Text>}
+      {info && <Text style={styles.cardInfo}>{info}</Text>}
     </TouchableOpacity>
   );
 };
@@ -35,6 +36,11 @@ const styles = StyleSheet.create({
     color: '#aaa',
     fontSize: 14,
     marginTop: 5,
+  },
+  cardInfo: {
+    color: '#ddd',
+    fontSize: 12,
+    marginTop: 2,
   },
 });
 

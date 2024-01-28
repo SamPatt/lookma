@@ -18,19 +18,20 @@ export default function HomeScreen({ navigation }) {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Servers</Text>
-        <Button
-          title="Add Server"
-          onPress={() => navigation.navigate('AddServerScreen')}
-        />
       </View>
       {servers.map((server) => (
         <Card
-          key={server.id}
-          title={server.name}
-          subtitle={`Address: ${server.address}`}
-          onPress={() => navigation.navigate('ConvoSelectScreen', { serverId: server.id })}
+        key={server.id}
+        title={`${server.name}`}
+        subtitle={`${server.type}  |  ${server.model}`}
+        info={`${server.address}:${server.port}`}
+        onPress={() => navigation.navigate('ConvoSelectScreen', { serverId: server.id })}
         />
-      ))}
+        ))}
+        <Button
+          title="Add Local Server"
+          onPress={() => navigation.navigate('AddServerScreen')}
+        />
     </ScrollView>
   );
 }
@@ -53,5 +54,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  // Add other styles if needed...
 });
