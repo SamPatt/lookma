@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { database } from '../utils/database';
 
 export default function AddServerScreen({ navigation }) {
   const [serverName, setServerName] = useState('');
@@ -14,26 +14,12 @@ export default function AddServerScreen({ navigation }) {
     setPort(newType === 'Ollama' ? '11434' : newType === 'LMStudio' ? '1234' : newType === 'Jan' ? '1337' : '');
   };
 
-  const saveServerSettings = async () => {
-    try {
-      const newSetting = { serverName, serverType, serverAddress, port };
-      const existingSettingsJson = await AsyncStorage.getItem('@server_settings');
-      let existingSettings = existingSettingsJson ? JSON.parse(existingSettingsJson) : [];
-  
-      // Ensure existingSettings is an array
-      if (!Array.isArray(existingSettings)) {
-        existingSettings = [];
-      }
-  
-      existingSettings.push(newSetting);
-      await AsyncStorage.setItem('@server_settings', JSON.stringify(existingSettings));
+  const saveServerSettings = () => {
+    database.insertServer(serverName, serverAddress, parseInt(port, 10), serverType, (result) => {
+      console.log('Server saved with ID:', result.insertId);
       navigation.goBack();
-    } catch (e) {
-      console.error('Error saving server settings:', e);
-    }
-  };
-  
-  
+    });
+  };  
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
