@@ -1,17 +1,22 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { database } from '../utils/database';
 
-const SERVER_URL = 'http://192.168.1.127:1234/v1/chat/completions'; // Replace with actual IP and port if necessary
-
-export const fetchCompletion = async (messages, temperature, max_tokens, stream) => {
+export const fetchCompletion = async (serverId, messages, temperature, max_tokens, stream) => {
   try {
-    // Retrieve the server address from AsyncStorage if you allow users to set it
-    const serverAddress = await AsyncStorage.getItem('serverAddress') || SERVER_URL;
+    // Await the server details
+    const server = await database.getServerById(serverId);
+    if (!server) {
+      console.log('Server not found');
+      return; // or throw new Error('Server not found');
+    }
 
+    // Construct the server address
+    const serverAddress = `http://${server.address}:${server.port}/v1/chat/completions`;
+
+    // Fetch request
     const response = await fetch(serverAddress, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Any other headers that need to be set
       },
       body: JSON.stringify({
         messages: [

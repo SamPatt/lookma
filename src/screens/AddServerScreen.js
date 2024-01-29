@@ -15,13 +15,22 @@ export default function AddServerScreen({ navigation }) {
     setPort(newType === 'Ollama' ? '11434' : newType === 'LMStudio' ? '1234' : newType === 'Jan' ? '1337' : '');
   };
 
-  const saveServerSettings = () => {
-    database.insertServer(serverName, serverAddress, parseInt(port, 10), serverType, serverModel, (result) => {
-      console.log('Server saved with ID:', result.insertId);
+  // const saveServerSettings = () => {
+  //   database.insertServer(serverName, serverAddress, parseInt(port, 10), serverType, serverModel, (result) => {
+  //     console.log('Server saved with ID:', result.insertId);
+  //     navigation.navigate('ConvoSelectScreen', { serverId: result.insertId });
+  //   });
+  // };
+  const saveServerSettings = async () => {
+    try {
+      const result = await database.insertServer(serverName, serverAddress, parseInt(port, 10), serverType, serverModel);
+      console.log('Server added with ID:', result.insertId);
       navigation.navigate('ConvoSelectScreen', { serverId: result.insertId });
-    });
+    } catch (error) {
+      console.error('Error adding server:', error);
+    }
   };
-    
+  
 
   return (
     <View style={styles.container}>

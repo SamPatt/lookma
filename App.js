@@ -13,11 +13,19 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+
   React.useEffect(() => {
-    database.init();
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 4000);
+    const initializeDatabase = async () => {
+      try {
+        await database.init();
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Database initialization failed:', error);
+        // Handle the error as appropriate for your app
+      }
+    };
+
+    initializeDatabase();
 
     // // Insert a test server
     // database.insertServer("Test Server", "127.0.0.1", 1234, "Model X", serverResult => {

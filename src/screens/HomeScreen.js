@@ -7,11 +7,16 @@ export default function HomeScreen({ navigation }) {
   const [servers, setServers] = useState([]);
 
   React.useEffect(() => {
-    database.getServers((loadedServers) => {
-      setServers(loadedServers);
-    }, (error) => {
-      console.error('Error loading server settings:', error);
-    });
+    const fetchServers = async () => {
+      try {
+        const loadedServers = await database.getServers();
+        setServers(loadedServers);
+      } catch (error) {
+        console.error('Error loading server settings:', error);
+      }
+    };
+
+    fetchServers();
   }, []);
 
   return (
