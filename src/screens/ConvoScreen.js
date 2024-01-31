@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { fetchCompletion } from '../services/api';
 
-export default function ConvoScreen({ route, navigation}) {
+export default function ConvoScreen({ route }) {
   const { serverId } = route.params;
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
-
-
+  const scrollViewRef = React.useRef();
+  
   const sendMessage = async () => {
     if (message.trim()) {
       // Add user message to conversation
       setConversation(prev => [...prev, { role: 'user', content: message }]);
-  
+      let tempMessage = message;
+      // Clear the message input after sending
+      setMessage('');
       try {
-        const completion = await fetchCompletion(serverId, message, 0.7, -1, false);
+        const completion = await fetchCompletion(serverId, tempMessage, 0.7, 150, false);
         let responseContent = 'No valid response from server';
-  
+
         // Extracting the content from the response
         if (completion.choices && completion.choices.length > 0 && completion.choices[0].message) {
           responseContent = completion.choices[0].message.content;
         }
-  
+
         // Add LLM response to conversation
         setConversation(prev => [...prev, { role: 'assistant', content: responseContent }]);
       } catch (error) {
@@ -29,14 +31,18 @@ export default function ConvoScreen({ route, navigation}) {
         // Add error message to conversation
         setConversation(prev => [...prev, { role: 'assistant', content: 'Error sending message' }]);
       }
-  
-      setMessage('');
+
+      
     }
   };
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.messagesContainer}>
+      <ScrollView
+        style={styles.messagesContainer}
+        ref={scrollViewRef}
+        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+      >
         {conversation.map((msg, index) => (
           <View key={index} style={msg.role === 'user' ? styles.userMessage : styles.llmMessage}>
             <Text style={styles.messageText}>{msg.content}</Text>
@@ -48,10 +54,13 @@ export default function ConvoScreen({ route, navigation}) {
           style={styles.input}
           onChangeText={setMessage}
           value={message}
-          placeholder="Type your message"
+          placeholder="Type your message here..."
           placeholderTextColor="#aaa"
+          multiline
         />
-        <Button title="Send" onPress={sendMessage} />
+         <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
+          <Text style={styles.sendButtonText}>Send</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -69,17 +78,32 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 10,
   },
   input: {
-    flex: 1,
-    height: 40,
+    height: 'auto',
+    maxHeight: 100, 
     borderColor: 'gray',
     borderWidth: 1,
-    color: 'white',
+    borderRadius: 5,
     padding: 10,
+    color: 'white',
+    flex: 1,
+    marginBottom: 5,
     marginRight: 10,
-    borderRadius: 4,
+  },
+  sendButton: {
+    backgroundColor: '#02a1bd',
+    borderRadius: 5,
+    justifyContent: 'center', // Center the text vertically
+    alignItems: 'center', // Center the text horizontally
+    padding: 10, // Add padding for the touchable area
+    marginLeft: 10, // Optional: add some margin if needed
+  },
+  sendButtonText: {
+    color: '#fff', // Text color
+    fontSize: 16, // Adjust to match your design
   },
   userMessage: {
     backgroundColor: '#333',
