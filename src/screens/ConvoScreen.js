@@ -90,20 +90,19 @@ const styles = StyleSheet.create({
     padding: 10,
     color: 'white',
     flex: 1,
-    marginBottom: 5,
     marginRight: 10,
   },
   sendButton: {
     backgroundColor: '#02a1bd',
     borderRadius: 5,
-    justifyContent: 'center', // Center the text vertically
-    alignItems: 'center', // Center the text horizontally
-    padding: 10, // Add padding for the touchable area
-    marginLeft: 10, // Optional: add some margin if needed
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    padding: 10, 
+    marginLeft: 6, 
   },
   sendButtonText: {
-    color: '#fff', // Text color
-    fontSize: 16, // Adjust to match your design
+    color: '#fff', 
+    fontSize: 16, 
   },
   userMessage: {
     backgroundColor: '#333',

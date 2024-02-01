@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { database } from '../utils/database';
 import Card from '../components/Card';
 
@@ -33,10 +33,10 @@ export default function HomeScreen({ navigation }) {
         onPress={() => navigation.navigate('ConvoSelectScreen', { serverId: server.id })}
         />
         ))}
-        <Button
-          title="Add Local Server"
-          onPress={() => navigation.navigate('AddServerScreen')}
-        />
+        
+        <TouchableOpacity onPress={() => navigation.navigate('AddServerScreen')} style={styles.addServerButton}>
+          <Text style={styles.addServerButtonText}>Add Local Server</Text>
+        </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -58,5 +58,17 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  addServerButton: {
+    backgroundColor: '#02a1bd',
+    borderRadius: 5,
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    padding: 10, 
+    marginLeft: 6, 
+  },
+  addServerButtonText: {
+    color: '#fff', 
+    fontSize: 16, 
   },
 });
