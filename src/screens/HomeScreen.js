@@ -21,9 +21,6 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Servers</Text>
-      </View>
       {servers.map((server) => (
         <Card
         key={server.id}

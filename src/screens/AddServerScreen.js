@@ -34,7 +34,6 @@ export default function AddServerScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Add Server</Text>
 
       {['Ollama', 'LMStudio', 'Jan', 'Other'].map((type) => (
         <Button key={type} title={type} onPress={() => handleServerTypeChange(type)} />

@@ -169,6 +169,21 @@ const init = async () => {
         );
       });
     });
+  };
+  
+  const deleteConversationAndMessages = async (conversationId) => {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        tx.executeSql('DELETE FROM messages WHERE conversation_id = ?;', [conversationId]);
+        tx.executeSql('DELETE FROM conversations WHERE id = ?;', [conversationId],
+          (_, result) => resolve(result),
+          (_, error) => {
+            console.error('Error deleting conversation and messages:', error);
+            reject(error);
+          }
+        );
+      });
+    });
   };  
 
   const updateConversationTitle = async (conversationId, newTitle) => {
@@ -231,6 +246,7 @@ export const database = {
     getServerById,
     getConversations,
     getConversationsById,
+    deleteConversationAndMessages,
     updateConversationTitle,
     getMessages,
     getMessagesById,
