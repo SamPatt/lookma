@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabase('new_app4.db');
+const db = SQLite.openDatabase('new_app6.db');
 
 
 const init = async () => {
@@ -31,7 +31,7 @@ const init = async () => {
             'CREATE TABLE IF NOT EXISTS messages (' +
             'id INTEGER PRIMARY KEY NOT NULL, ' +
             'conversation_id INTEGER NOT NULL, ' +
-            'text TEXT NOT NULL, ' +
+            'content TEXT NOT NULL, ' +
             'role TEXT NOT NULL, ' +
             'timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, ' +
             'FOREIGN KEY (conversation_id) REFERENCES conversations (id));'
@@ -81,12 +81,12 @@ const init = async () => {
   };
   
   
-  const insertMessage = async (conversationId, text, role) => {
+  const insertMessage = async (conversationId, content, role) => {
     return new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
-          'INSERT INTO messages (conversation_id, text, role) VALUES (?, ?, ?);',
-          [conversationId, text, role],
+          'INSERT INTO messages (conversation_id, content, role) VALUES (?, ?, ?);',
+          [conversationId, content, role],
           (_, result) => resolve(result),
           (_, error) => {
             console.error('Error inserting message:', error);
@@ -96,6 +96,7 @@ const init = async () => {
       });
     });
   };
+  
   
   
   const getServers = async () => {
