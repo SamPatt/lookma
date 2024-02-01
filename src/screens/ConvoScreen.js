@@ -1,22 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { fetchCompletion } from '../services/api';
+import { database } from '../utils/database';
 
 export default function ConvoScreen({ route }) {
+  const { conversationId } = route.params;
   const { serverId } = route.params;
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
   const scrollViewRef = React.useRef();
   
+  React.useEffect(() => {
+    const loadMessages = async () => {
+      try {
+        const loadedMessages = await database.getMessagesById(conversationId);
+        setConversation(loadedMessages);
+      } catch (error) {
+        console.error('Error loading messages:', error);
+      }
+    };
+
+    loadMessages();
+  }, [conversationId]);
+
   const sendMessage = async () => {
     if (message.trim()) {
-      // Add user message to conversation
-      setConversation(prev => [...prev, { role: 'user', content: message }]);
-      let tempMessage = message;
+      const userMessage = { conversation_id: conversationId, content: message, role: 'user' };
+      const aiMessage = { conversation_id: conversationId, content: '', role: 'assistant' };
+
+      // Add user message to conversation and database
+      setConversation(prev => [...prev, userMessage]);
+      await database.insertMessage(conversationId, message, 'user');
+
       // Clear the message input after sending
       setMessage('');
+
       try {
-        const completion = await fetchCompletion(serverId, tempMessage, 0.7, 150, false);
+        const completion = await fetchCompletion(serverId, message, 0.7, 150, false);
         let responseContent = 'No valid response from server';
 
         // Extracting the content from the response
@@ -24,15 +44,14 @@ export default function ConvoScreen({ route }) {
           responseContent = completion.choices[0].message.content;
         }
 
-        // Add LLM response to conversation
-        setConversation(prev => [...prev, { role: 'assistant', content: responseContent }]);
+        // Update AI message and add to conversation and database
+        aiMessage.content = responseContent;
+        setConversation(prev => [...prev, aiMessage]);
+        await database.insertMessage(conversationId, responseContent, 'assistant');
       } catch (error) {
         console.error('Error sending message:', error);
-        // Add error message to conversation
-        setConversation(prev => [...prev, { role: 'assistant', content: 'Error sending message' }]);
+        setConversation(prev => [...prev, { ...aiMessage, content: 'Error sending message' }]);
       }
-
-      
     }
   };
 
