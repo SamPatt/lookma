@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { database } from '../utils/database';
 
 export default function ConvoSelectScreen({ route, navigation }) {
   const { serverId } = route.params;
   const [conversations, setConversations] = useState([]);
+  const isFocused = useIsFocused();
 
-  React.useEffect(() => {
-    loadConversations();
-  }, [serverId]);
+  useEffect(() => {
+    if (isFocused) {
+      loadConversations();
+    }
+  }, [isFocused]);
 
   const loadConversations = async () => {
     try {
@@ -18,7 +22,7 @@ export default function ConvoSelectScreen({ route, navigation }) {
       console.error('Error loading conversations:', error);
     }
   };
-
+  
   const handleNewConversation = async () => {
     try {
       // Assuming 'Untitled Conversation' as the default title for new conversations

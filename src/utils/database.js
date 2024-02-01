@@ -6,6 +6,7 @@ const db = SQLite.openDatabase('new_app6.db');
 const init = async () => {
     return new Promise((resolve, reject) => {
       db.transaction(tx => {
+        // Servers
         tx.executeSql(
             'CREATE TABLE IF NOT EXISTS servers (' +
             'id INTEGER PRIMARY KEY NOT NULL, ' +
@@ -16,7 +17,7 @@ const init = async () => {
             'model TEXT NOT NULL);'
           );
       
-          // Create Conversations Table
+          // Conversations
           tx.executeSql(
             'CREATE TABLE IF NOT EXISTS conversations (' +
             'id INTEGER PRIMARY KEY NOT NULL, ' +
@@ -26,7 +27,7 @@ const init = async () => {
             'FOREIGN KEY (server_id) REFERENCES servers (id));'
           );
       
-          // Create Messages Table
+          // Messages
           tx.executeSql(
             'CREATE TABLE IF NOT EXISTS messages (' +
             'id INTEGER PRIMARY KEY NOT NULL, ' +
@@ -169,6 +170,23 @@ const init = async () => {
       });
     });
   };  
+
+  const updateConversationTitle = async (conversationId, newTitle) => {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        tx.executeSql(
+          'UPDATE conversations SET title = ? WHERE id = ?;',
+          [newTitle, conversationId],
+          (_, result) => resolve(result),
+          (_, error) => {
+            console.error('Error updating conversation title:', error);
+            reject(error);
+          }
+        );
+      });
+    });
+  };
+  
   
   const getMessages = async () => {
     return new Promise((resolve, reject) => {
@@ -213,6 +231,7 @@ export const database = {
     getServerById,
     getConversations,
     getConversationsById,
+    updateConversationTitle,
     getMessages,
     getMessagesById,
 };

@@ -26,34 +26,41 @@ export default function ConvoScreen({ route }) {
   const sendMessage = async () => {
     if (message.trim()) {
       const userMessage = { conversation_id: conversationId, content: message, role: 'user' };
-      const aiMessage = { conversation_id: conversationId, content: '', role: 'assistant' };
-
-      // Add user message to conversation and database
+      
+      // Check if this is the first message in the conversation
+      if (conversation.length === 0) {
+        // This is the first message, so update the conversation title
+        const newTitle = message.substring(0, 30); // Use the first 30 characters of the message
+        await database.updateConversationTitle(conversationId, newTitle);
+      }
+  
+      // Proceed to add user message to conversation and database
       setConversation(prev => [...prev, userMessage]);
       await database.insertMessage(conversationId, message, 'user');
-
+  
       // Clear the message input after sending
       setMessage('');
-
+  
       try {
         const completion = await fetchCompletion(serverId, message, 0.7, 150, false);
         let responseContent = 'No valid response from server';
-
+  
         // Extracting the content from the response
         if (completion.choices && completion.choices.length > 0 && completion.choices[0].message) {
           responseContent = completion.choices[0].message.content;
         }
-
+  
         // Update AI message and add to conversation and database
-        aiMessage.content = responseContent;
+        const aiMessage = { conversation_id: conversationId, content: responseContent, role: 'assistant' };
         setConversation(prev => [...prev, aiMessage]);
         await database.insertMessage(conversationId, responseContent, 'assistant');
       } catch (error) {
         console.error('Error sending message:', error);
-        setConversation(prev => [...prev, { ...aiMessage, content: 'Error sending message' }]);
+        // Handle error for message sending failure
       }
     }
   };
+  
 
   return (
     <View style={styles.container}>
