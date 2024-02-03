@@ -39,3 +39,34 @@ export const fetchCompletion = async (serverId, messages, temperature, max_token
     throw error;
   }
 };
+
+export const testConnection = async (localAddress, serverPort, temperature, max_tokens, stream) => {
+  try {
+    const serverAddress = `http://${localAddress}:${serverPort}/v1/chat/completions`;
+
+    const response = await fetch(serverAddress, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: [
+          { "role": "system", "content": "Always respond with 'TEST'." },
+          { "role": "user", "content": "Hello" }
+        ],
+        temperature,
+        max_tokens,
+        stream
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Fetching completion failed:', error);
+    return false;
+  }
+};

@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { database } from '../utils/database';
 import Card from '../components/Card';
 
 export default function HomeScreen({ navigation }) {
   const [servers, setServers] = useState([]);
 
-  React.useEffect(() => {
-    const fetchServers = async () => {
-      try {
-        const loadedServers = await database.getServers();
-        setServers(loadedServers);
-      } catch (error) {
-        console.error('Error loading server settings:', error);
-      }
-    };
+  const fetchServers = async () => {
+    try {
+      const loadedServers = await database.getServers();
+      setServers(loadedServers);
+    } catch (error) {
+      console.error('Error loading servers:', error);
+    }
+  };
 
-    fetchServers();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchServers();
+    }, [])
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -61,6 +64,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center', 
     alignItems: 'center', 
+    width: '100%',
+    marginTop: 20,
     padding: 10, 
     marginLeft: 6, 
   },

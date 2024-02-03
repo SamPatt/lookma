@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabase('new_app6.db');
+const db = SQLite.openDatabase('new_app7.db');
 
 
 const init = async () => {
