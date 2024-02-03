@@ -17,6 +17,7 @@ export default function ConvoScreen({ route }) {
   const [message, setMessage] = useState("");
   const [conversation, setConversation] = useState([]);
   const [loadingAIResponse, setLoadingAIResponse] = useState(false);
+  const [error, setError] = useState("");
 
   const scrollViewRef = React.useRef();
 
@@ -60,6 +61,7 @@ export default function ConvoScreen({ route }) {
           150,
           false
         );
+        setError("");
         let responseContent = "No valid response from server";
 
         if (
@@ -83,6 +85,9 @@ export default function ConvoScreen({ route }) {
         );
       } catch (error) {
         console.error("Error sending message:", error);
+        setError(
+          "Could not connect to the server. Ensure server is running and settings are correct."
+        );
       }
       setLoadingAIResponse(false);
     }
@@ -113,6 +118,7 @@ export default function ConvoScreen({ route }) {
           />
         )}
       </ScrollView>
+      {error ? <Text style={styles.errorMessage}>{error}</Text> : null}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -184,5 +190,10 @@ const styles = StyleSheet.create({
   },
   messageText: {
     color: "white",
+  },
+  errorMessage: {
+    color: 'red', 
+    margin: 10, 
+    textAlign: 'center',
   },
 });
