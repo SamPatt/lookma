@@ -137,6 +137,46 @@ const init = async () => {
       });
     });
   };  
+
+  const deleteServerAndRelatedData = async (serverId) => {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        // First, delete all messages related to the server's conversations
+        tx.executeSql(
+          'DELETE FROM messages WHERE conversation_id IN (SELECT id FROM conversations WHERE server_id = ?);',
+          [serverId],
+          null,
+          (_, error) => {
+            console.error('Error deleting messages for server:', error);
+            reject(error);
+          }
+        );
+  
+        // Next, delete the conversations associated with the server
+        tx.executeSql(
+          'DELETE FROM conversations WHERE server_id = ?;',
+          [serverId],
+          null,
+          (_, error) => {
+            console.error('Error deleting conversations for server:', error);
+            reject(error);
+          }
+        );
+  
+        // Finally, delete the server itself
+        tx.executeSql(
+          'DELETE FROM servers WHERE id = ?;',
+          [serverId],
+          (_, result) => resolve(result),
+          (_, error) => {
+            console.error('Error deleting server:', error);
+            reject(error);
+          }
+        );
+      });
+    });
+  };
+  
   
 
   const getConversations = async () => {
@@ -244,6 +284,7 @@ export const database = {
     insertMessage,
     getServers,
     getServerById,
+    deleteServerAndRelatedData,
     getConversations,
     getConversationsById,
     deleteConversationAndMessages,

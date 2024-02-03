@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const Card = ({ title, subtitle, info, onPress }) => {
+const Card = ({ title, subtitle, info, onPress, onLongPress }) => {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity style={styles.card} onPress={onPress} onLongPress={onLongPress}>
       <Text style={styles.cardTitle}>{title}</Text>
       {subtitle && <Text style={styles.cardSubtitle}>{subtitle}</Text>}
       {info && <Text style={styles.cardInfo}>{info}</Text>}
