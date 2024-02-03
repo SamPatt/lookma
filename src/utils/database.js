@@ -63,6 +63,26 @@ const init = async () => {
       });
     });
   };
+
+  const updateServer = async (id, name, address, port, type, model) => {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        tx.executeSql(
+          'UPDATE servers SET name = ?, address = ?, port = ?, type = ?, model = ? WHERE id = ?;',
+          [name, address, port, type, model, id],
+          (_, result) => {
+            console.log('Server updated successfully');
+            resolve(result);
+          },
+          (_, error) => {
+            console.error('Error updating server:', error);
+            reject(error);
+          }
+        );
+      });
+    });
+  };
+  
   
   
   const insertConversation = async (serverId, title) => {
@@ -280,6 +300,7 @@ const init = async () => {
 export const database = {
     init,
     insertServer,
+    updateServer,
     insertConversation,
     insertMessage,
     getServers,

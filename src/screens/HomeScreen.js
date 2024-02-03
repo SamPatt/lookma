@@ -43,6 +43,10 @@ export default function HomeScreen({ navigation }) {
     );
   };
 
+  const navigateToEditServerScreen = (serverId) => {
+    navigation.navigate('EditServerScreen', { serverId });
+  };
+  
   const showDeleteConfirmation = (serverId, serverName) => {
     Alert.alert(
       "Delete Server",
@@ -69,7 +73,7 @@ export default function HomeScreen({ navigation }) {
       console.error('Error deleting server:', error);
       Alert.alert("Error", "Failed to delete server.");
     }
-    checkDeletion(serverId);
+    checkDeletion(serverId); // Remove in production
   };
   
 
@@ -82,6 +86,8 @@ export default function HomeScreen({ navigation }) {
     }
   };
   
+
+  // Remove in production
   const checkDeletion = async (serverId) => {
     try {
       const servers = await database.getServers(); // Assuming this function fetches all servers
