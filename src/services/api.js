@@ -20,7 +20,7 @@ export const fetchCompletion = async (serverId, messages, temperature, max_token
       },
       body: JSON.stringify({
         messages: [
-          { "role": "system", "content": "Always answer in rhymes." },
+          { "role": "system", "content": "You are a helpful assistant." },
           { "role": "user", "content": messages }
         ],
         temperature,
