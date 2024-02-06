@@ -48,7 +48,7 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ title: "Servers" }}
+          options={{ title: "Model / App / Server Combos" }}
         />
         <Stack.Screen
           name="ConvoSelectScreen"
@@ -68,7 +68,7 @@ export default function App() {
         <Stack.Screen
           name="AddServerScreen"
           component={AddServerScreen}
-          options={{ title: "Add Server" }}
+          options={{ title: "Add Combo" }}
         />
         <Stack.Screen
           name="EditServerScreen"

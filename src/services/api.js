@@ -11,7 +11,7 @@ export const fetchCompletion = async (serverId, messages, temperature, max_token
 
     // Construct the server address
     const serverAddress = `http://${server.address}:${server.port}/v1/chat/completions`;
-
+    const model = server.model;
     // Fetch request
     const response = await fetch(serverAddress, {
       method: 'POST',
@@ -23,6 +23,7 @@ export const fetchCompletion = async (serverId, messages, temperature, max_token
           { "role": "system", "content": "You are a helpful assistant." },
           { "role": "user", "content": messages }
         ],
+        model,
         temperature,
         max_tokens,
         stream
@@ -40,10 +41,10 @@ export const fetchCompletion = async (serverId, messages, temperature, max_token
   }
 };
 
-export const testConnection = async (localAddress, serverPort, temperature, max_tokens, stream) => {
+export const testConnection = async (localAddress, serverPort, serverModel, temperature, max_tokens, stream) => {
   try {
     const serverAddress = `http://${localAddress}:${serverPort}/v1/chat/completions`;
-
+    const model = serverModel;
     const response = await fetch(serverAddress, {
       method: 'POST',
       headers: {
@@ -54,6 +55,7 @@ export const testConnection = async (localAddress, serverPort, temperature, max_
           { "role": "system", "content": "Always respond with 'TEST'." },
           { "role": "user", "content": "Hello" }
         ],
+        model,
         temperature,
         max_tokens,
         stream

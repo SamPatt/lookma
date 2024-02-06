@@ -39,7 +39,7 @@ export default function AddServerScreen({ navigation }) {
     setLoadingAIResponse(true);
 
     try {
-      const success = await testConnection(serverAddress, port, 0.7, 150, false)
+      const success = await testConnection(serverAddress, port, serverModel, 0.7, 150, false)
       setTestConnectionSuccess(success);
       setLoadingAIResponse(false);
       if (success) {
@@ -102,7 +102,7 @@ export default function AddServerScreen({ navigation }) {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Name for your server"
+        placeholder="Name for your combo"
         placeholderTextColor="#aaa"
         value={serverName}
         onChangeText={setServerName}
@@ -110,7 +110,7 @@ export default function AddServerScreen({ navigation }) {
 
       <TextInput
         style={styles.input}
-        placeholder="LLM Model"
+        placeholder="Model, e.g., tinyllama-1.1b"
         placeholderTextColor="#aaa"
         value={serverModel}
         onChangeText={setServerModel}

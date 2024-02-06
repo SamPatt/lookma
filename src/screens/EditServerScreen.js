@@ -116,7 +116,7 @@ export default function EditServerScreen({ route, navigation }) {
     setLoadingAIResponse(true);
 
     try {
-      const success = await testConnection(serverAddress, port, 0.7, 150, false)
+      const success = await testConnection(serverAddress, port, serverModel, 0.7, 150, false)
       setTestConnectionSuccess(success);
       setLoadingAIResponse(false);
       if (success) {

@@ -121,7 +121,7 @@ export default function HomeScreen({ navigation }) {
         ))}
         
         <TouchableOpacity onPress={() => navigation.navigate('AddServerScreen')} style={styles.addServerButton}>
-          <Text style={styles.addServerButtonText}>Add Local Server</Text>
+          <Text style={styles.addServerButtonText}>Add Local Combo</Text>
         </TouchableOpacity>
     </ScrollView>
   );
