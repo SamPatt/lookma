@@ -62,6 +62,13 @@ export default function ConvoScreen({ route }) {
         await database.updateConversationTitle(conversationId, newTitle);
       }
 
+      const conversationHistory = conversation
+        .map((msg) => ({
+          role: msg.role,
+          content: msg.content,
+        }))
+        .concat(userMessage);
+
       setConversation((prev) => [...prev, userMessage]);
       await database.insertMessage(conversationId, message, "user");
 
@@ -71,12 +78,11 @@ export default function ConvoScreen({ route }) {
       try {
         const completion = await fetchCompletion(
           serverId,
-          message,
+          conversationHistory,
           0.7,
           150,
           false
         );
-        setError("");
         let responseContent = "No valid response from server";
 
         if (

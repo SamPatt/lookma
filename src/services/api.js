@@ -1,6 +1,6 @@
 import { database } from '../utils/database';
 
-export const fetchCompletion = async (serverId, messages, temperature, max_tokens, stream) => {
+export const fetchCompletion = async (serverId, conversationHistory, temperature, max_tokens, stream) => {
   try {
     // Await the server details
     const server = await database.getServerById(serverId);
@@ -11,7 +11,7 @@ export const fetchCompletion = async (serverId, messages, temperature, max_token
 
     // Construct the server address
     const serverAddress = `http://${server.address}:${server.port}/v1/chat/completions`;
-    const model = server.model;
+    
     // Fetch request
     const response = await fetch(serverAddress, {
       method: 'POST',
@@ -19,11 +19,9 @@ export const fetchCompletion = async (serverId, messages, temperature, max_token
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        messages: [
-          { "role": "system", "content": "You are a helpful assistant." },
-          { "role": "user", "content": messages }
-        ],
-        model,
+        // Directly use conversationHistory which is now an array of {role, content}
+        messages: conversationHistory,
+        model: server.model,
         temperature,
         max_tokens,
         stream
@@ -40,6 +38,7 @@ export const fetchCompletion = async (serverId, messages, temperature, max_token
     throw error;
   }
 };
+
 
 export const testConnection = async (localAddress, serverPort, serverModel, temperature, max_tokens, stream) => {
   try {
