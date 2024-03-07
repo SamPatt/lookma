@@ -8,9 +8,13 @@ It can store multiple server settings, and multiple conversations across those s
 
 All data is stored on device in a SQLite database.
 
+# Tutorial
+
+[![LookMa Tutorial](https://i9.ytimg.com/vi/DY0rSqmzqNs/mqdefault.jpg?v=65ea1f2d&sqp=CLDoqK8G&rs=AOn4CLDrRnXfXhyA213U4xdgPtZzNRAQ4g)](https://youtu.be/DY0rSqmzqNs "LookMa Tutorial")
+
 # License
 
-LookMa is SamPatt Licensed, which is an MIT derivative. License is in the repository.
+LookMa is SamPatt Licensed, which is a MIT derivative. License is in the repository.
 
 # Screenshots
 
