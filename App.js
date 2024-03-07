@@ -7,15 +7,19 @@ import ConvoScreen from "./src/screens/ConvoScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
 import AddServerScreen from "./src/screens/AddServerScreen";
 import EditServerScreen from "./src/screens/EditServerScreen";
+import TutorialScreen from "./src/screens/TutorialScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
 import { database } from "./src/utils/database";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [firstLaunch, setFirstLaunch] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const initializeDatabase = async () => {
       try {
         await database.init();
@@ -24,6 +28,15 @@ export default function App() {
         console.error("Database initialization failed:", error);
       }
     };
+
+    AsyncStorage.getItem('alreadyLaunched').then(value => {
+      if (value == null) {
+        AsyncStorage.setItem('alreadyLaunched', 'true');
+        setFirstLaunch(true);
+      } else {
+        setFirstLaunch(true); // Change to false to show tutorial only once
+      }
+    });
 
     initializeDatabase();
 
@@ -34,7 +47,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName={firstLaunch ? "Tutorial" : "Home"}
         screenOptions={{
           headerStyle: {
             backgroundColor: "#A12516", 
@@ -45,6 +58,13 @@ export default function App() {
           },
         }}
       >
+        {firstLaunch && (
+          <Stack.Screen
+            name="Tutorial"
+            component={TutorialScreen}
+            options={{ title: "Tutorial" }}
+          />
+        )}
         <Stack.Screen
           name="Home"
           component={HomeScreen}

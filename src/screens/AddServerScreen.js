@@ -145,10 +145,7 @@ export default function AddServerScreen({ navigation }) {
           </Text>
           <Text style={styles.modalText}>* Windows: Use 'ipconfig' in CMD</Text>
           <Text style={styles.modalText}>
-            * macOS: Use 'ifconfig' in Terminal
-          </Text>
-          <Text style={styles.modalText}>
-            * Linux: Use 'hostname -I' in Terminal
+            * macOS / Linux: Use 'ifconfig' in Terminal
           </Text>
 
           <TouchableOpacity

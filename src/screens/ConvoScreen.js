@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import * as Clipboard from "expo-clipboard";
 import {
   View,
   Text,
@@ -80,7 +81,7 @@ export default function ConvoScreen({ route }) {
           serverId,
           conversationHistory,
           0.7,
-          150,
+          2000,
           false
         );
         let responseContent = "No valid response from server";
@@ -112,6 +113,11 @@ export default function ConvoScreen({ route }) {
       }
       setLoadingAIResponse(false);
     }
+  };
+
+  const copyToClipboard = (text) => {
+    Clipboard.setStringAsync(text);
+    // Optionally, display a toast or an alert to inform the user that the text has been copied.
   };
 
   return (
@@ -150,7 +156,11 @@ export default function ConvoScreen({ route }) {
                 msg.role === "user" ? styles.userMessage : styles.llmMessage
               }
             >
-              <Text style={styles.messageText}>{msg.content}</Text>
+              <TouchableOpacity
+                onLongPress={() => copyToClipboard(msg.content)}
+              >
+                <Text style={styles.messageText}>{msg.content}</Text>
+              </TouchableOpacity>
             </View>
           </View>
         ))}
