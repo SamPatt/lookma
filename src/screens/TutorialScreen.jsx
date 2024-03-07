@@ -9,10 +9,10 @@ const TutorialScreen = ({ navigation }) => {
                 style={styles.webView}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
-                source={{ uri: "https://www.youtube.com/embed/KPDlo5jrhmI" }}
+                source={{ uri: "https://www.youtube.com/embed/DY0rSqmzqNs" }}
             />
             <Button
-                title="Skip"
+                title="Exit"
                 onPress={() => navigation.replace('Home')}
             />
         </View>

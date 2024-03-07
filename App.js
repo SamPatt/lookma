@@ -7,6 +7,7 @@ import ConvoScreen from "./src/screens/ConvoScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
 import AddServerScreen from "./src/screens/AddServerScreen";
 import EditServerScreen from "./src/screens/EditServerScreen";
+import AboutScreen from "./src/screens/AboutScreen";
 import TutorialScreen from "./src/screens/TutorialScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
 import { database } from "./src/utils/database";
@@ -34,7 +35,7 @@ export default function App() {
         AsyncStorage.setItem('alreadyLaunched', 'true');
         setFirstLaunch(true);
       } else {
-        setFirstLaunch(true); // Change to false to show tutorial only once
+        setFirstLaunch(false); 
       }
     });
 
@@ -84,6 +85,11 @@ export default function App() {
           name="Settings"
           component={SettingsScreen}
           options={{ title: "Settings" }}
+        />
+        <Stack.Screen
+          name="About"
+          component={AboutScreen}
+          options={{ title: "About" }}
         />
         <Stack.Screen
           name="AddServerScreen"
