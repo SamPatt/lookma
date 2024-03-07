@@ -1,12 +1,16 @@
 # LookMa
 
-LookMa is a React Native app built for Android users as an interface for their locally-run LLMs.
+LookMa is a bare-bones React Native app built for Android users as an interface for their locally-run LLMs.
+
+When toying around with running LLMs locally, I was annoyed at not having a simple way to connect to my server from my Android phone. I built LookMa to address this issue, and open sourced it.
 
 It can store multiple server settings, and multiple conversations across those servers. 
 
 All data is stored on device in a SQLite database.
 
-It's a work in progress. Aiming to launch in the Google Play store by end of February 24'.
+# License
+
+LookMa is SamPatt Licensed, which is an MIT derivative. License is in the repository.
 
 # Screenshots
 
