@@ -9,7 +9,6 @@ import AddServerScreen from "./src/screens/AddServerScreen";
 import EditServerScreen from "./src/screens/EditServerScreen";
 import AboutScreen from "./src/screens/AboutScreen";
 import TutorialScreen from "./src/screens/TutorialScreen";
-import LoadingScreen from "./src/screens/LoadingScreen";
 import { database } from "./src/utils/database";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -42,9 +41,6 @@ export default function App() {
     initializeDatabase();
 
   }, []);
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
   return (
     <NavigationContainer>
       <Stack.Navigator
