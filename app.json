@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sampatt.lookma"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2ec02d53-ccd2-4236-acbb-232c0233f0e6"
+      }
     }
   }
 }
