@@ -2,10 +2,10 @@
   "expo": {
     "name": "LookMa - Local LLM UI",
     "slug": "lookma",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,7 +22,8 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.sampatt.lookma"
+      "package": "com.sampatt.lookma",
+      "useCleartextTraffic": true 
     },
     "web": {
       "favicon": "./assets/favicon.png"
