@@ -23,7 +23,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.sampatt.lookma",
-      "useCleartextTraffic": true 
+      "useCleartextTraffic": true,
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
