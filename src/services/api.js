@@ -9,8 +9,15 @@ export const fetchCompletion = async (serverId, conversationHistory, temperature
       return; // or throw new Error('Server not found');
     }
 
+    // Determine protocol (https if the address already includes it, otherwise http)
+    const protocol = server.address.startsWith('https://') ? '' : 
+                     server.address.startsWith('http://') ? '' : 'http://';
+    
     // Construct the server address
-    const serverAddress = `http://${server.address}:${server.port}/v1/chat/completions`;
+    const cleanAddress = server.address.replace(/^https?:\/\//, '');
+    const serverAddress = `${protocol}${cleanAddress}:${server.port}/v1/chat/completions`;
+    
+    console.log('Connecting to:', serverAddress);
     
     // Fetch request
     const response = await fetch(serverAddress, {
@@ -42,7 +49,16 @@ export const fetchCompletion = async (serverId, conversationHistory, temperature
 
 export const testConnection = async (localAddress, serverPort, serverModel, temperature, max_tokens, stream) => {
   try {
-    const serverAddress = `http://${localAddress}:${serverPort}/v1/chat/completions`;
+    // Determine protocol (https if the address already includes it, otherwise http)
+    const protocol = localAddress.startsWith('https://') ? '' : 
+                     localAddress.startsWith('http://') ? '' : 'http://';
+    
+    // Construct the server address
+    const cleanAddress = localAddress.replace(/^https?:\/\//, '');
+    const serverAddress = `${protocol}${cleanAddress}:${serverPort}/v1/chat/completions`;
+    
+    console.log('Testing connection to:', serverAddress);
+    
     const model = serverModel;
     const response = await fetch(serverAddress, {
       method: 'POST',

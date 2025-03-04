@@ -17,6 +17,7 @@ import { testConnection } from "../services/api";
 export default function AddServerScreen({ navigation }) {
   const [serverName, setServerName] = useState("");
   const [serverType, setServerType] = useState("Select Server App");
+  const [useHttps, setUseHttps] = useState(false);
   const [serverAddress, setServerAddress] = useState("");
   const [serverModel, setServerModel] = useState("");
   const [port, setPort] = useState("");
@@ -118,7 +119,7 @@ export default function AddServerScreen({ navigation }) {
 
       <TextInput
         style={styles.input}
-        placeholder="Local Server Address"
+        placeholder="Local Server Address (e.g. 192.168.1.10 or https://example.com)"
         placeholderTextColor="#aaa"
         value={serverAddress}
         onChangeText={setServerAddress}

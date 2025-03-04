@@ -8,6 +8,13 @@ It can store multiple server settings, and multiple conversations across those s
 
 All data is stored on device in a SQLite database.
 
+## Version 1.0.3 Update
+
+- Fixed HTTPS/HTTP connection issues for local servers
+- Improved connection handling for local LLMs
+- Better protocol detection for server addresses  
+- Now supports both `http://` and `https://` protocols
+
 # Tutorial
 
 [![LookMa Tutorial](https://i9.ytimg.com/vi/DY0rSqmzqNs/mqdefault.jpg?v=65ea1f2d&sqp=CLDoqK8G&rs=AOn4CLDrRnXfXhyA213U4xdgPtZzNRAQ4g)](https://youtu.be/DY0rSqmzqNs "LookMa Tutorial")

@@ -5,7 +5,10 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "android": {
+        "image": "latest"
+      }
     },
     "preview": {
       "distribution": "internal"
@@ -13,6 +16,19 @@
     "production": {
       "android": {
         "buildType": "app-bundle"
+      }
+    },
+    "test": {
+      "android": {
+        "buildType": "apk",
+        "image": "ubuntu-18.04-jdk-11-ndk-r19c", 
+        "cache": {
+          "key": "test"
+        },
+        "distribution": "internal"
+      },
+      "env": {
+        "EXPO_USE_EXPOTOOLS": "1"
       }
     }
   },

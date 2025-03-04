@@ -149,7 +149,7 @@ export default function EditServerScreen({ route, navigation }) {
 
       <TextInput
         style={styles.input}
-        placeholder="Local Server Address"
+        placeholder="Local Server Address (e.g. 192.168.1.10 or https://example.com)"
         placeholderTextColor="#aaa"
         value={serverAddress}
         onChangeText={setServerAddress}
